@@ -22,6 +22,11 @@ struct TabMain: View {
                     Label("Income", systemImage: "square.and.pencil")
                 }
             
+            ProfileScreen()
+                .tabItem {
+                    Label("Profile", systemImage: "person")
+                }
+            
         }
     }
 }

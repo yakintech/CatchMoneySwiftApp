@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var loginStatus = true
+    
     var body: some View {
-        TabMain()
+        
+        if(loginStatus){
+            TabMain()
+        }
+        else{
+            AuthScreen()
+        }
+        
     }
 }
 
