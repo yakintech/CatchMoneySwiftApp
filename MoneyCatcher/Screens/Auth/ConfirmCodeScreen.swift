@@ -19,7 +19,7 @@ struct ConfirmCodeScreen: View {
     
     
     var body: some View {
-        Text("VERİFİCATİON")
+        Text("VERIFICATION")
             .font(.title)
             .fontWeight(.bold)
         
