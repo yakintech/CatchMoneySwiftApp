@@ -10,6 +10,7 @@
 //kareler rakam alacak
 
 import SwiftUI
+import Alamofire
 
 struct ConfirmCodeScreen: View {
     @State private var code1: String = ""
@@ -68,7 +69,26 @@ struct ConfirmCodeScreen: View {
             
             .padding()
             Button(action :{
-                print("Done.")
+               
+                var code = code1 + code2 + code3 + code4
+                var email = UserDefaults.standard.string(forKey: "email")
+                
+                let confirmParameter : [String : Any] = [
+                    "confirmCode": code,
+                    "email":email
+                ]
+                
+                AF.request("http://localhost:3000/confirm", method: .post, parameters: confirmParameter, encoding: JSONEncoding.default).responseDecodable(of:ConfirmCodeResponseModel.self ){response in
+                    
+                    if(response.response?.statusCode == 200){
+                        print("Kullanıcı girişi başarılı")
+                    }
+                    else{
+                        print("Kullanıcı girişi hatalı!")
+                    }
+                }
+                
+                
             })    {
                 Text("Verify")
                     .font(.title3)
@@ -86,4 +106,10 @@ struct ConfirmCodeScreen: View {
 #Preview
 {
     ConfirmCodeScreen()
+}
+
+
+
+struct ConfirmCodeResponseModel : Codable{
+    var message : String = ""
 }
