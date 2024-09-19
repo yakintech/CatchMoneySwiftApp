@@ -8,9 +8,27 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-    var body: some View {
-        Text("Profile Screen")
-    }
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = true  // Oturum durumunu kontrol eder
+        
+        var body: some View {
+            VStack {
+                Text("Profile Screen")
+                    .font(.title2)
+                    .padding()
+                
+                Button(action: {
+                    isLoggedIn = false  // Oturumdan çıkıldığında bu değeri false yapar
+                }) {
+                    Text("Logout")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+            }
+        }
 }
 
 #Preview {
