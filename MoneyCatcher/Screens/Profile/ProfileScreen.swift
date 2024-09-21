@@ -8,26 +8,38 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-    @AppStorage("isLoggedIn") var isLoggedIn: Bool = true  // Oturum durumunu kontrol eder
+   
+    @State var isActive = false
         
         var body: some View {
-            VStack {
-                Text("Profile Screen")
-                    .font(.title2)
-                    .padding()
-                
-                Button(action: {
-                    isLoggedIn = false  // Oturumdan çıkıldığında bu değeri false yapar
-                }) {
-                    Text("Logout")
-                        .frame(maxWidth: .infinity)
+            NavigationView{
+                VStack {
+                    Text("Profile Screen")
+                        .font(.title2)
                         .padding()
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
+                    
+                    Button(action: {
+                        UserDefaults.standard.setValue("", forKey: "email")
+                        isActive = true
+                        
+                    }) {
+                        Text("Logout")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    
+                    NavigationLink(destination: AuthScreen(), isActive: $isActive){
+                        EmptyView()
+                    }
                 }
-                .padding()
+
             }
+            
+          
         }
 }
 

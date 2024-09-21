@@ -17,6 +17,7 @@ struct ConfirmCodeScreen: View {
     @State private var code2: String = ""
     @State private var code3: String = ""
     @State private var code4: String = ""
+    @State private var isActive = false
     
     
     var body: some View {
@@ -70,18 +71,19 @@ struct ConfirmCodeScreen: View {
             .padding()
             Button(action :{
                
-                var code = code1 + code2 + code3 + code4
-                var email = UserDefaults.standard.string(forKey: "email")
+                let code = code1 + code2 + code3 + code4
+                let email = UserDefaults.standard.string(forKey: "email")
                 
                 let confirmParameter : [String : Any] = [
                     "confirmCode": code,
                     "email":email
                 ]
                 
-                AF.request("http://localhost:3000/confirm", method: .post, parameters: confirmParameter, encoding: JSONEncoding.default).responseDecodable(of:ConfirmCodeResponseModel.self ){response in
+                AF.request("https://walrus-app-hqcca.ondigitalocean.app/confirm", method: .post, parameters: confirmParameter, encoding: JSONEncoding.default).responseDecodable(of:ConfirmCodeResponseModel.self ){response in
                     
                     if(response.response?.statusCode == 200){
                         print("Kullanıcı girişi başarılı")
+                        isActive = true
                     }
                     else{
                         print("Kullanıcı girişi hatalı!")
@@ -97,6 +99,10 @@ struct ConfirmCodeScreen: View {
                     .background(Color.orange)
                     .foregroundColor(.white)
                     .cornerRadius(20)
+            }
+            
+            NavigationLink(destination: TabMain(), isActive: $isActive){
+                EmptyView()
             }
         }
 

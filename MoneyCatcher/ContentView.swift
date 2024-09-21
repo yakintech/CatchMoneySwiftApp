@@ -6,18 +6,50 @@
 //
 
 import SwiftUI
+import Alamofire
 
 struct ContentView: View {
     
     @State var loginStatus = false
+    @State var loading = true
     
     var body: some View {
         
-        if(loginStatus){
-            TabMain()
+        VStack{
+            if(loading == false){
+                if(loginStatus){
+                    TabMain()
+                }
+                else{
+                    AuthScreen()
+                }
+            }
+            else{
+                Text("Loading...")
+            }
         }
-        else{
-            AuthScreen()
+        .onAppear(){
+            
+            let email = UserDefaults.standard.string(forKey: "email")
+            
+            let checkParameter : [String : Any] = [
+                "email":email
+            ]
+            
+            
+            AF.request("https://walrus-app-hqcca.ondigitalocean.app/checkuser", method: .post, parameters: checkParameter, encoding: JSONEncoding.default).responseDecodable(of:CheckUserResponseModel.self ){response in
+                
+                if(response.response?.statusCode == 200){
+                    loading = false
+                    loginStatus = true
+                }
+                else{
+                    loading = false
+                }
+                
+                
+            }
+            
         }
         
     }
@@ -25,4 +57,7 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+struct CheckUserResponseModel : Codable{
+    var message : String = ""
 }
