@@ -10,16 +10,16 @@ import Alamofire
 
 
 struct AuthScreen: View {
-
     @State private var email = ""
     @State var isActive : Bool = false
+    @ObservedObject var loginManager: LoginManager
     
     var body: some View {
         
         NavigationView{
             VStack {
                 
-             
+                
                 
                 Text("Login")
                     .font(.largeTitle)
@@ -31,16 +31,15 @@ struct AuthScreen: View {
         
                 
                 Button(action: {
-                    
                     let user : [String : Any] = [
                         "email":email
                     ]
                     
                     
                     AF.request("https://walrus-app-hqcca.ondigitalocean.app/auth", method: .post, parameters: user, encoding: JSONEncoding.default).responseDecodable(of: RegisterModel.self){response in
-                        isActive = true
+                        
                         UserDefaults.standard.setValue(email, forKey: "email")
-                      
+                        isActive = true
                     }
                     
                 }) {
@@ -53,7 +52,7 @@ struct AuthScreen: View {
                 }
                 .padding()
                 
-                NavigationLink(destination: ConfirmCodeScreen(), isActive: $isActive){
+                NavigationLink(destination: ConfirmCodeScreen(loginManager: LoginManager()).navigationBarBackButtonHidden(true), isActive: $isActive){
                     EmptyView()
                 }
             }

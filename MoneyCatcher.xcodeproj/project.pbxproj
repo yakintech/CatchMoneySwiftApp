@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F62C9C8EDC0079E1B0 /* Alamofire */; };
-		1DC915F92C9C8EDC0079E1B0 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F82C9C8EDC0079E1B0 /* AlamofireDynamic */; };
 		1DE8E72B2C9B4823003FF6C5 /* MoneyCatcherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE8E72A2C9B4823003FF6C5 /* MoneyCatcherApp.swift */; };
 		1DE8E72D2C9B4823003FF6C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE8E72C2C9B4823003FF6C5 /* ContentView.swift */; };
 		1DE8E72F2C9B4825003FF6C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DE8E72E2C9B4825003FF6C5 /* Assets.xcassets */; };
@@ -41,7 +40,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */,
-				1DC915F92C9C8EDC0079E1B0 /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

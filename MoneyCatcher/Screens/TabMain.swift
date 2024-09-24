@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TabMain: View {
+    @ObservedObject var loginManager: LoginManager
     var body: some View {
         
         TabView{
@@ -22,7 +23,7 @@ struct TabMain: View {
                     Label("Income", systemImage: "square.and.pencil")
                 }
             
-            ProfileScreen()
+            ProfileScreen(loginManager: loginManager)
                 .tabItem {
                     Label("Profile", systemImage: "person")
                 }
@@ -32,5 +33,5 @@ struct TabMain: View {
 }
 
 #Preview {
-    TabMain()
+    TabMain(loginManager: LoginManager())
 }

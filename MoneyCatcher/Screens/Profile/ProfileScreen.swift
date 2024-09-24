@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileScreen: View {
-   
+    @ObservedObject var loginManager: LoginManager
     @State var isActive = false
         
         var body: some View {
@@ -20,6 +20,7 @@ struct ProfileScreen: View {
                     
                     Button(action: {
                         UserDefaults.standard.setValue("", forKey: "email")
+                        loginManager.isLoggedIn = false
                         isActive = true
                         
                     }) {
@@ -32,7 +33,7 @@ struct ProfileScreen: View {
                     }
                     .padding()
                     
-                    NavigationLink(destination: AuthScreen(), isActive: $isActive){
+                    NavigationLink(destination: AuthScreen(loginManager: LoginManager()).navigationBarBackButtonHidden(true), isActive: $isActive){
                         EmptyView()
                     }
                 }
@@ -44,5 +45,5 @@ struct ProfileScreen: View {
 }
 
 #Preview {
-    ProfileScreen()
+    ProfileScreen(loginManager: LoginManager())
 }

@@ -8,20 +8,23 @@
 import SwiftUI
 import Alamofire
 
+class LoginManager: ObservableObject {
+    @AppStorage("isLoggedIn") var isLoggedIn: Bool = false
+}
+
 struct ContentView: View {
-    
-    @State var loginStatus = false
+    @StateObject private var loginManager = LoginManager()
     @State var loading = true
     
     var body: some View {
         
         VStack{
             if(loading == false){
-                if(loginStatus){
-                    TabMain()
+                if(loginManager.isLoggedIn){
+                    TabMain(loginManager: LoginManager())
                 }
                 else{
-                    AuthScreen()
+                    AuthScreen(loginManager: LoginManager())
                 }
             }
             else{
@@ -41,7 +44,7 @@ struct ContentView: View {
                 
                 if(response.response?.statusCode == 200){
                     loading = false
-                    loginStatus = true
+                    loginManager.isLoggedIn = true
                 }
                 else{
                     loading = false

@@ -18,7 +18,11 @@ struct ConfirmCodeScreen: View {
     @State private var code3: String = ""
     @State private var code4: String = ""
     @State private var isActive = false
-    
+    @ObservedObject var loginManager: LoginManager
+    @FocusState private var isFirstFieldFocused: Bool // Focus state for the first text field
+    @FocusState private var isSecondFieldFocused: Bool
+    @FocusState private var isThirdFieldFocused: Bool
+    @FocusState private var isFourthFieldFocused: Bool
     
     var body: some View {
         Text("VERIFICATION")
@@ -42,7 +46,20 @@ struct ConfirmCodeScreen: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .frame(width:50)
-                
+                    .focused($isFirstFieldFocused)
+                    .keyboardType(.numberPad) // Set keyboard type to number pad
+                    .onChange(of: code1) { newValue in
+                        if newValue.count > 1 {
+                            code1 = String(newValue.prefix(1)) // Keep only the first character
+                        }
+                        
+                        if newValue.count == 1 {
+                            code2 = ""
+                            isSecondFieldFocused = true
+                            isFirstFieldFocused = false
+                            
+                        }
+                    }
                 TextField("", text: $code2)
                     .padding()
                     .multilineTextAlignment(.center)
@@ -50,6 +67,25 @@ struct ConfirmCodeScreen: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .frame(width:50)
+                    .focused($isSecondFieldFocused)
+                    .keyboardType(.numberPad)
+                    .onChange(of: code2) { newValue in
+                        // Limit input to one character
+                        if newValue.count > 1 {
+                            code2 = String(newValue.prefix(1))
+                        }
+                        // Dismiss the keyboard if a character is entered
+                        if newValue.count == 1 {
+                            code3 = ""
+                            isThirdFieldFocused = true
+                            isSecondFieldFocused = false
+                            
+                        }
+                        if newValue.isEmpty {
+                            isFirstFieldFocused = true // Focus back on the first text field
+                        }
+                    }
+            
                 
                 TextField("", text: $code3)
                     .padding()
@@ -58,6 +94,24 @@ struct ConfirmCodeScreen: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .frame(width:50)
+                    .focused($isThirdFieldFocused)
+                    .keyboardType(.numberPad)
+                    .onChange(of: code3) { newValue in
+                        // Limit input to one character
+                        if newValue.count > 1 {
+                            code3 = String(newValue.prefix(1))
+                        }
+                        // Dismiss the keyboard if a character is entered
+                        if newValue.count == 1 {
+                            code4 = ""
+                            isFourthFieldFocused = true
+                            isThirdFieldFocused = false
+                        }
+                        if newValue.isEmpty {
+                            isSecondFieldFocused = true // Focus back on the first text field
+                        }
+                    }
+
                 
                 TextField("", text: $code4)
                     .padding()
@@ -66,11 +120,26 @@ struct ConfirmCodeScreen: View {
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
                     .frame(width:50)
+                    .focused($isFourthFieldFocused)
+                    .keyboardType(.numberPad)
+                    .onChange(of: code4) { newValue in
+                        // Limit input to one character
+                        if newValue.count > 1 {
+                            code4 = String(newValue.prefix(1))
+                        }
+                        // Dismiss the keyboard if a character is entered
+                        if newValue.count == 1 {
+                            isFourthFieldFocused = false
+                        }
+                        if newValue.isEmpty {
+                            isThirdFieldFocused = true // Focus back on the first text field
+                        }
+                    }
             }
             
             .padding()
             Button(action :{
-               
+                
                 let code = code1 + code2 + code3 + code4
                 let email = UserDefaults.standard.string(forKey: "email")
                 
@@ -84,6 +153,7 @@ struct ConfirmCodeScreen: View {
                     if(response.response?.statusCode == 200){
                         print("Kullanıcı girişi başarılı")
                         isActive = true
+                        loginManager.isLoggedIn = true
                     }
                     else{
                         print("Kullanıcı girişi hatalı!")
@@ -101,8 +171,15 @@ struct ConfirmCodeScreen: View {
                     .cornerRadius(20)
             }
             
-            NavigationLink(destination: TabMain(), isActive: $isActive){
+            NavigationLink(destination: ContentView().navigationBarBackButtonHidden(true), isActive: $isActive){
                 EmptyView()
+            }
+            .onAppear {
+                isFirstFieldFocused = true
+            }
+            .onTapGesture {
+                isFirstFieldFocused = false
+                isSecondFieldFocused = false
             }
         }
 
@@ -111,7 +188,7 @@ struct ConfirmCodeScreen: View {
 
 #Preview
 {
-    ConfirmCodeScreen()
+    ConfirmCodeScreen(loginManager: LoginManager())
 }
 
 
