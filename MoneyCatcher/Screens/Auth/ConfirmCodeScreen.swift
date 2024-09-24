@@ -151,7 +151,7 @@ struct ConfirmCodeScreen: View {
                     "email":email
                 ]
                 
-                AF.request("https://walrus-app-hqcca.ondigitalocean.app/confirm", method: .post, parameters: confirmParameter, encoding: JSONEncoding.default).responseDecodable(of:ConfirmCodeResponseModel.self ){response in
+                AF.request("\(APIConfig.apiUrl)/confirm", method: .post, parameters: confirmParameter, encoding: JSONEncoding.default).responseDecodable(of:ConfirmCodeResponseModel.self ){response in
                     
                     if(response.response?.statusCode == 200){
                         print("Kullanıcı girişi başarılı")

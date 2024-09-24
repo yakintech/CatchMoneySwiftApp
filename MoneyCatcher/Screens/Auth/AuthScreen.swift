@@ -36,7 +36,9 @@ struct AuthScreen: View {
                     ]
                     
                     
-                    AF.request("https://walrus-app-hqcca.ondigitalocean.app/auth", method: .post, parameters: user, encoding: JSONEncoding.default).responseDecodable(of: RegisterModel.self){response in
+                    
+                    
+                    AF.request("\(APIConfig.apiUrl)/auth", method: .post, parameters: user, encoding: JSONEncoding.default).responseDecodable(of: RegisterModel.self){response in
                         
                         UserDefaults.standard.setValue(email, forKey: "email")
                         isActive = true
