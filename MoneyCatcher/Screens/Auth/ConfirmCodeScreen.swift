@@ -82,7 +82,8 @@ struct ConfirmCodeScreen: View {
                             
                         }
                         if newValue.isEmpty {
-                            isFirstFieldFocused = true // Focus back on the first text field
+                            isFirstFieldFocused = true
+                            isSecondFieldFocused = false
                         }
                     }
             
@@ -108,7 +109,8 @@ struct ConfirmCodeScreen: View {
                             isThirdFieldFocused = false
                         }
                         if newValue.isEmpty {
-                            isSecondFieldFocused = true // Focus back on the first text field
+                            isSecondFieldFocused = true
+                            isThirdFieldFocused = false// Focus back on the first text field
                         }
                     }
 
@@ -132,7 +134,8 @@ struct ConfirmCodeScreen: View {
                             isFourthFieldFocused = false
                         }
                         if newValue.isEmpty {
-                            isThirdFieldFocused = true // Focus back on the first text field
+                            isThirdFieldFocused = true
+                            isFourthFieldFocused = false// Focus back on the first text field
                         }
                     }
             }
