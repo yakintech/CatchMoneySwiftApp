@@ -11,6 +11,8 @@
 		1D7CF1A32CA320D800CB17ED /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A22CA320D800CB17ED /* APIConfig.swift */; };
 		1D7CF1A62CA3271600CB17ED /* ExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A52CA3271600CB17ED /* ExpenseModel.swift */; };
 		1D7CF1A82CA32FD800CB17ED /* AddExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A72CA32FD800CB17ED /* AddExpense.swift */; };
+		1D7CF1BA2CA5BE7C00CB17ED /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1B92CA5BE7C00CB17ED /* DateHelper.swift */; };
+		1D7CF1BD2CA5BF7B00CB17ED /* ReportsMainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1BC2CA5BF7B00CB17ED /* ReportsMainScreen.swift */; };
 		1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F62C9C8EDC0079E1B0 /* Alamofire */; };
 		1DE8E72B2C9B4823003FF6C5 /* MoneyCatcherApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE8E72A2C9B4823003FF6C5 /* MoneyCatcherApp.swift */; };
 		1DE8E72D2C9B4823003FF6C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE8E72C2C9B4823003FF6C5 /* ContentView.swift */; };
@@ -28,6 +30,8 @@
 		1D7CF1A22CA320D800CB17ED /* APIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConfig.swift; sourceTree = "<group>"; };
 		1D7CF1A52CA3271600CB17ED /* ExpenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseModel.swift; sourceTree = "<group>"; };
 		1D7CF1A72CA32FD800CB17ED /* AddExpense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpense.swift; sourceTree = "<group>"; };
+		1D7CF1B92CA5BE7C00CB17ED /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
+		1D7CF1BC2CA5BF7B00CB17ED /* ReportsMainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsMainScreen.swift; sourceTree = "<group>"; };
 		1DE8E7272C9B4823003FF6C5 /* MoneyCatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoneyCatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DE8E72A2C9B4823003FF6C5 /* MoneyCatcherApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyCatcherApp.swift; sourceTree = "<group>"; };
 		1DE8E72C2C9B4823003FF6C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +58,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D7CF1B82CA5BE6F00CB17ED /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				1D7CF1B92CA5BE7C00CB17ED /* DateHelper.swift */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		1D7CF1BB2CA5BF6700CB17ED /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				1D7CF1BC2CA5BF7B00CB17ED /* ReportsMainScreen.swift */,
+			);
+			path = Reports;
+			sourceTree = "<group>";
+		};
 		1DE8E71E2C9B4823003FF6C5 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +93,7 @@
 		1DE8E7292C9B4823003FF6C5 /* MoneyCatcher */ = {
 			isa = PBXGroup;
 			children = (
+				1D7CF1B82CA5BE6F00CB17ED /* utils */,
 				1DE8E7392C9B4879003FF6C5 /* Models */,
 				1DE8E7382C9B4873003FF6C5 /* Screens */,
 				1DE8E72A2C9B4823003FF6C5 /* MoneyCatcherApp.swift */,
@@ -94,6 +115,7 @@
 		1DE8E7382C9B4873003FF6C5 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				1D7CF1BB2CA5BF6700CB17ED /* Reports */,
 				1DE8E7452C9B4B5C003FF6C5 /* Auth */,
 				1DE8E73C2C9B489E003FF6C5 /* Profile */,
 				1DE8E73B2C9B4894003FF6C5 /* Expense */,
@@ -227,11 +249,13 @@
 				1D7CF1A62CA3271600CB17ED /* ExpenseModel.swift in Sources */,
 				1DE8E73E2C9B48AA003FF6C5 /* TabMain.swift in Sources */,
 				1D7CF1A82CA32FD800CB17ED /* AddExpense.swift in Sources */,
+				1D7CF1BD2CA5BF7B00CB17ED /* ReportsMainScreen.swift in Sources */,
 				1DE8E7442C9B4AC3003FF6C5 /* ProfileScreen.swift in Sources */,
 				1DE8E7492C9B4C40003FF6C5 /* ConfirmCodeScreen.swift in Sources */,
 				1DE8E72D2C9B4823003FF6C5 /* ContentView.swift in Sources */,
 				1D7CF1A32CA320D800CB17ED /* APIConfig.swift in Sources */,
 				1DE8E7422C9B48E6003FF6C5 /* IncomeMainScreen.swift in Sources */,
+				1D7CF1BA2CA5BE7C00CB17ED /* DateHelper.swift in Sources */,
 				1DE8E72B2C9B4823003FF6C5 /* MoneyCatcherApp.swift in Sources */,
 				1DE8E7402C9B48D2003FF6C5 /* ExpenseMainScreen.swift in Sources */,
 			);

@@ -11,27 +11,66 @@ import SwiftUI
 struct ExpenseMainScreen: View {
 
     @State var expenses: [ExpenseModel] = []
+    var dateFilters : [DateFilterModel] = [DateFilterModel(key: "today", text:"Today"),DateFilterModel(key: "yesterday", text:"Yesterday"),DateFilterModel(key: "last_week", text:"Last Week"),DateFilterModel(key: "last_month", text:"Last Month"),DateFilterModel(key: "all", text:"All")]
+    @State private var selectedDateFilter = DateFilterModel(key: "today", text:"today")
     
-    let dateFormatter: ISO8601DateFormatter = {
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            return formatter
-        }()
-        
-        let displayFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "dd MMMM yyyy EEEE HH:mm"
-            formatter.locale = Locale(identifier: "en_US")
-            return formatter
-        }()
-
-
+    
+    @State var categories : [CategoryPickerModel] = []
+    @State private var selectedCategory = CategoryPickerModel()
+    
+    
+    @State var minAmount : String = ""
+    @State var maxAmount : String = ""
     
 
     var body: some View {
         NavigationView {
         ScrollView {
                    VStack(spacing: 18) {  // Her öğe arasında daha fazla boşluk
+                       
+                       Picker("Please choose a filter", selection: $selectedDateFilter) {
+                                      ForEach(dateFilters, id: \.self) {
+                                          Text($0.text)
+                                      }
+                                  }
+                       .onChange(of:selectedDateFilter) { newValue in
+                           let request = AF.request(
+                            "\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)", encoding: JSONEncoding.default
+                           ).responseDecodable(of: [ExpenseModel].self) { response in
+
+                               expenses = response.value ?? []
+                           }
+                                  }
+                       Divider()
+                       
+                       Picker("Please choose a category", selection: $selectedCategory) {
+                                      ForEach(categories, id: \.self) {
+                                          Text($0.name)
+                                      }
+                                  }
+                       .onChange(of:selectedCategory) { newValue in
+                           let request = AF.request(
+                            "\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)", encoding: JSONEncoding.default
+                           ).responseDecodable(of: [ExpenseModel].self) { response in
+
+                               expenses = response.value ?? []
+                           }
+                                  }
+                       
+                       Divider()
+                       
+                       TextField("Min: ", text: $minAmount)
+                           .padding()
+                       
+                       TextField("Max: ", text: $maxAmount)
+                           .padding()
+                       
+                       Button("Search"){
+                           
+                       }
+                       
+                       
+                       
                        ForEach(expenses, id: \._id) { item in
                            ZStack {
                                RoundedRectangle(cornerRadius: 20)
@@ -68,7 +107,7 @@ struct ExpenseMainScreen: View {
                                            .bold()
                                    }
                                    
-                                   Text(formatDate(item.date))
+                                   Text(DateHelper.formatDate(item.date))
                                        .font(.footnote)
                                        .foregroundColor(.white.opacity(0.8))
                                }
@@ -99,26 +138,42 @@ struct ExpenseMainScreen: View {
                         .padding()
                 }*/
         .onAppear {
-            let request = AF.request(
-                "\(APIConfig.apiUrl)/expense", encoding: JSONEncoding.default
+            AF.request(
+                "\(APIConfig.apiUrl)/expense/filter?period=today", encoding: JSONEncoding.default
             ).responseDecodable(of: [ExpenseModel].self) { response in
 
                 expenses = response.value ?? []
                 print(expenses)
+                
+                AF.request(
+                    "\(APIConfig.apiUrl)/category", encoding: JSONEncoding.default
+                ).responseDecodable(of: [CategoryPickerModel].self) { response in
+
+                    categories = response.value ?? []
+                }
             }
+            
+           
         }
     }
     
-    func formatDate(_ dateString: String) -> String {
-            if let date = dateFormatter.date(from: dateString) {
-                return displayFormatter.string(from: date)
-            } else {
-                return dateString  // Eğer dönüştürülemiyorsa orijinal stringi gösterir
-            }
-        }
+
 
 }
 
 #Preview {
     ExpenseMainScreen()
+}
+
+
+
+struct DateFilterModel : Hashable{
+    var key : String = ""
+    var text : String = ""
+}
+
+
+struct CategoryPickerModel : Codable, Hashable{
+    var _id : String = ""
+    var name : String = ""
 }

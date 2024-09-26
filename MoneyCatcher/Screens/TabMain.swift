@@ -23,6 +23,11 @@ struct TabMain: View {
                     Label("Income", systemImage: "square.and.pencil")
                 }
             
+            ReportsMainScreen()
+                .tabItem {
+                    Label("Reports", systemImage: "chart.pie")
+                }
+            
             ProfileScreen(loginManager: loginManager)
                 .tabItem {
                     Label("Profile", systemImage: "person")

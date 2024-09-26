@@ -17,6 +17,6 @@ struct ExpenseModel : Codable{
 }
 
 
-struct Category : Codable{
+struct Category : Codable, Hashable{
     var name : String = ""
 }
