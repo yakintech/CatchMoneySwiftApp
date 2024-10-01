@@ -53,7 +53,6 @@ struct AuthScreen: View {
                         .cornerRadius(8)
                 }
                 .padding()
-                
                 NavigationLink(destination: ConfirmCodeScreen(loginManager: LoginManager()).navigationBarBackButtonHidden(true), isActive: $isActive){
                     EmptyView()
                 }

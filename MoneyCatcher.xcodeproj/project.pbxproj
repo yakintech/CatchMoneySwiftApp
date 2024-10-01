@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D7CF1A12CA31B7D00CB17ED /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F82C9C8EDC0079E1B0 /* AlamofireDynamic */; };
 		1D7CF1A32CA320D800CB17ED /* APIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A22CA320D800CB17ED /* APIConfig.swift */; };
 		1D7CF1A62CA3271600CB17ED /* ExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A52CA3271600CB17ED /* ExpenseModel.swift */; };
 		1D7CF1A82CA32FD800CB17ED /* AddExpense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1A72CA32FD800CB17ED /* AddExpense.swift */; };
@@ -50,7 +49,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D7CF1A12CA31B7D00CB17ED /* AlamofireDynamic in Frameworks */,
 				1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

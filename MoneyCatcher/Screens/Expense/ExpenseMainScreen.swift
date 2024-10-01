@@ -9,7 +9,7 @@ import Alamofire
 import SwiftUI
 
 struct ExpenseMainScreen: View {
-
+    
     @State var expenses: [ExpenseModel] = []
     var dateFilters : [DateFilterModel] = [DateFilterModel(key: "today", text:"Today"),DateFilterModel(key: "yesterday", text:"Yesterday"),DateFilterModel(key: "last_week", text:"Last Week"),DateFilterModel(key: "last_month", text:"Last Month"),DateFilterModel(key: "all", text:"All")]
     @State private var selectedDateFilter = DateFilterModel(key: "today", text:"today")
@@ -21,7 +21,7 @@ struct ExpenseMainScreen: View {
     
     @State var minAmount : String = ""
     @State var maxAmount : String = ""
-    
+    @State var isButtonActive = false
 
     var body: some View {
         NavigationView {
@@ -117,16 +117,22 @@ struct ExpenseMainScreen: View {
                            
                            .frame(height: 120)  // Kartların yüksekliği
                        }
+                       NavigationLink(destination: AddExpense().navigationBarBackButtonHidden(false), isActive: $isButtonActive){
+                           EmptyView()
+                       }
                    }
                }
                    .navigationBarItems(trailing: Button(action: {
                        // Butona basıldığında herhangi bir işlem yapılmıyor
-                       print("Add Expense butonuna basıldı")
+                       isButtonActive = true
                    }) {
                        Text("Add Expense")
                            .foregroundColor(.blue)  
                    })
+            
         }
+        
+        
         /*ScrollView{
             VStack{
 
