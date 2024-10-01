@@ -12,6 +12,7 @@ import Alamofire
 struct AuthScreen: View {
     @State private var email = ""
     @State var isActive : Bool = false
+    @State var goHome : Bool = false
     @ObservedObject var loginManager: LoginManager
     
     var body: some View {
@@ -53,7 +54,40 @@ struct AuthScreen: View {
                         .cornerRadius(8)
                 }
                 .padding()
+                
+                Divider()
+                
+                Button("Google ile auth"){
+                    Task{
+                      var result = try await GoogleSignInManager.shared.signInWithGoogle()
+                    
+                        
+                        let user : [String : Any] = [
+                            "email":result?.profile?.email
+                        ]
+                        
+                    
+                        AF.request("\(APIConfig.apiUrl)/login/gmail", method: .post, parameters: user, encoding: JSONEncoding.default).responseDecodable(of: GoogleLoginResponseModel.self){response in
+                            if(response.response?.statusCode == 200){
+                                UserDefaults.standard.setValue(email, forKey: "email")
+                                goHome = true
+                            }
+                          
+                        }
+                        
+                    }
+                }
+                
+                Button("Logout"){
+                    Task{
+                        try await GoogleSignInManager.shared.signOutFromGoogle()
+                    }
+                }
                 NavigationLink(destination: ConfirmCodeScreen(loginManager: LoginManager()).navigationBarBackButtonHidden(true), isActive: $isActive){
+                    EmptyView()
+                }
+                
+                NavigationLink(destination: TabMain().navigationBarBackButtonHidden(true), isActive: $goHome){
                     EmptyView()
                 }
             }
@@ -71,4 +105,10 @@ struct AuthScreen: View {
 struct RegisterModel : Codable{
     var email : String
     var confirmCode : String
+}
+
+
+
+struct GoogleLoginResponseModel : Codable{
+    var id : String = ""
 }
