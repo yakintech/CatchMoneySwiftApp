@@ -49,11 +49,15 @@ struct ConfirmCodeScreen: View {
                     .focused($isFirstFieldFocused)
                     .keyboardType(.numberPad) // Set keyboard type to number pad
                     .onChange(of: code1) { newValue in
-                        if newValue.count > 1 {
-                            code1 = String(newValue.prefix(1)) // Keep only the first character
+                        let filtered = newValue.filter { $0.isNumber}
+                
+                        if filtered.count > 1 {
+                            code1 = String(filtered.prefix(1)) // Keep only the first character
+                        } else {
+                            code1 = filtered
                         }
                         
-                        if newValue.count == 1 {
+                        if filtered.count == 1 {
                             code2 = ""
                             isSecondFieldFocused = true
                             isFirstFieldFocused = false
@@ -70,18 +74,22 @@ struct ConfirmCodeScreen: View {
                     .focused($isSecondFieldFocused)
                     .keyboardType(.numberPad)
                     .onChange(of: code2) { newValue in
-                        // Limit input to one character
-                        if newValue.count > 1 {
-                            code2 = String(newValue.prefix(1))
+                        
+                        let filtered = newValue.filter { $0.isNumber }
+                        
+                        if filtered.count > 1 {
+                            code2 = String(filtered.prefix(1))
+                        }else {
+                            code2 = filtered
                         }
                         // Dismiss the keyboard if a character is entered
-                        if newValue.count == 1 {
+                        if filtered.count == 1 {
                             code3 = ""
                             isThirdFieldFocused = true
                             isSecondFieldFocused = false
-                            
+
                         }
-                        if newValue.isEmpty {
+                        if filtered.isEmpty {
                             isFirstFieldFocused = true
                             isSecondFieldFocused = false
                         }
@@ -98,17 +106,21 @@ struct ConfirmCodeScreen: View {
                     .focused($isThirdFieldFocused)
                     .keyboardType(.numberPad)
                     .onChange(of: code3) { newValue in
-                        // Limit input to one character
-                        if newValue.count > 1 {
-                            code3 = String(newValue.prefix(1))
+                        
+                        let filtered = newValue.filter {$0.isNumber}
+                        
+                        if filtered.count > 1 {
+                            code3 = String(filtered.prefix(1))
                         }
-                        // Dismiss the keyboard if a character is entered
-                        if newValue.count == 1 {
+                        else{
+                            code3 = filtered
+                        }
+                        if filtered.count == 1 {
                             code4 = ""
                             isFourthFieldFocused = true
                             isThirdFieldFocused = false
                         }
-                        if newValue.isEmpty {
+                        if filtered.isEmpty {
                             isSecondFieldFocused = true
                             isThirdFieldFocused = false// Focus back on the first text field
                         }
@@ -125,15 +137,20 @@ struct ConfirmCodeScreen: View {
                     .focused($isFourthFieldFocused)
                     .keyboardType(.numberPad)
                     .onChange(of: code4) { newValue in
+                        
+                        let filtered = newValue.filter {$0.isNumber}
                         // Limit input to one character
-                        if newValue.count > 1 {
-                            code4 = String(newValue.prefix(1))
+                        if filtered.count > 1 {
+                            code4 = String(filtered.prefix(1))
+                        }
+                        else{
+                            code4 = filtered
                         }
                         // Dismiss the keyboard if a character is entered
-                        if newValue.count == 1 {
+                        if code4.count == 1 {
                             isFourthFieldFocused = false
                         }
-                        if newValue.isEmpty {
+                        if filtered.isEmpty {
                             isThirdFieldFocused = true
                             isFourthFieldFocused = false// Focus back on the first text field
                         }

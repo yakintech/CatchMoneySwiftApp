@@ -13,7 +13,6 @@
 		1D7CF1BA2CA5BE7C00CB17ED /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1B92CA5BE7C00CB17ED /* DateHelper.swift */; };
 		1D7CF1BD2CA5BF7B00CB17ED /* ReportsMainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7CF1BC2CA5BF7B00CB17ED /* ReportsMainScreen.swift */; };
 		1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F62C9C8EDC0079E1B0 /* Alamofire */; };
-		1DE3A0DA2CAC557700B2E4BF /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 1DC915F82C9C8EDC0079E1B0 /* AlamofireDynamic */; };
 		1DE3A0DF2CAC588200B2E4BF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1DE3A0DE2CAC588200B2E4BF /* FirebaseAnalytics */; };
 		1DE3A0E12CAC588200B2E4BF /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 1DE3A0E02CAC588200B2E4BF /* FirebaseAnalyticsOnDeviceConversion */; };
 		1DE3A0E32CAC588200B2E4BF /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 1DE3A0E22CAC588200B2E4BF /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -64,7 +63,6 @@
 				1DE3A0EE2CAC5A0D00B2E4BF /* GoogleSignInSwift in Frameworks */,
 				1DE3A0E72CAC588200B2E4BF /* FirebaseAppDistribution-Beta in Frameworks */,
 				1DE3A0EC2CAC5A0D00B2E4BF /* GoogleSignIn in Frameworks */,
-				1DE3A0DA2CAC557700B2E4BF /* AlamofireDynamic in Frameworks */,
 				1DE3A0E32CAC588200B2E4BF /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				1DC915F72C9C8EDC0079E1B0 /* Alamofire in Frameworks */,
 				1DE3A0DF2CAC588200B2E4BF /* FirebaseAnalytics in Frameworks */,

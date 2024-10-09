@@ -7,11 +7,7 @@ struct AddExpense: View {
     @State var categories: [CategoryPickerModel] = []
     @State private var selectedCategory = CategoryPickerModel()
     
-    var currentDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium // Choose desired date style (e.g., .medium, .short, .long)
-        return formatter.string(from: Date())
-    }// Set an initial default category
+    @State private var currentDate = Date()
     
     var body: some View {
         VStack(spacing :10) {
@@ -22,7 +18,7 @@ struct AddExpense: View {
             } else {
                 HStack{
                     Text("Selected Category: ")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame( alignment: .leading)
                     Picker("Please choose a category", selection: $selectedCategory) {
                         ForEach(categories, id: \.self) { category in
                             
@@ -31,21 +27,39 @@ struct AddExpense: View {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .pickerStyle(MenuPickerStyle()) // Change to MenuPickerStyle for a dropdown picker
+                    .pickerStyle(MenuPickerStyle())
                 }.padding(.horizontal)
             }
-            HStack{
+            HStack {
                 Text("Enter Amount: ")
+                    .frame(alignment: .leading)
+
                 TextField("Amount", text: $amount)
-                .keyboardType(.decimalPad) // Use decimal pad for numeric input
-                .textFieldStyle(RoundedBorderTextFieldStyle()) // Style the TextField
-                .padding(.horizontal)
-            }.padding(.horizontal)
-            Text("Date: \(currentDate)")
-            .frame(maxWidth: .infinity, alignment: .leading)
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(RoundedBorderTextFieldStyle()) // Style the TextField
+                    .frame(maxWidth: .infinity)
+            }
             .padding(.horizontal)
+            
+            
+            VStack(alignment: .leading) {
+                Text("Select a date")
+                    .font(.headline)
+                    .padding(.bottom, 5)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                DatePicker("", selection: $currentDate, displayedComponents: .date)
+                    .datePickerStyle(WheelDatePickerStyle())
+                    .padding()
+            }
+            .padding()
+
+            Text("Date: \(currentDate, formatter: dateFormatter)")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            
             Button(action: {
-                print("Add Button Clikec")
+                print("Add Button Clicked")
             }) {
                 Text("Add")
                     .frame(width: UIScreen.main.bounds.width * 0.9, height: 50)
@@ -53,10 +67,6 @@ struct AddExpense: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }.padding()
-                
-            
-            
-            
             
             Spacer()
             
@@ -66,7 +76,13 @@ struct AddExpense: View {
         }
     }
     
-    // Function to fetch categories using Alamofire
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short // You can adjust the style here
+        return formatter
+    }
+    
+    
     func fetchCategories() {
         let url = "https://walrus-app-hqcca.ondigitalocean.app/category"
         

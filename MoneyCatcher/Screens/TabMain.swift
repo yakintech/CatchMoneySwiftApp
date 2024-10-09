@@ -10,30 +10,34 @@ import SwiftUI
 struct TabMain: View {
     @ObservedObject var loginManager: LoginManager
     var body: some View {
-        
-        TabView{
-            
-            ExpenseMainScreen()
-                .tabItem {
-                    Label("Expense", systemImage: "list.dash")
+        VStack{
+            if loginManager.isLoggedIn {
+                TabView{
+                    
+                    ExpenseMainScreen()
+                        .tabItem {
+                            Label("Expense", systemImage: "list.dash")
+                        }
+                    
+                    IncomeMainScreen()
+                        .tabItem {
+                            Label("Income", systemImage: "square.and.pencil")
+                        }
+                    
+                    ReportsMainScreen()
+                        .tabItem {
+                            Label("Reports", systemImage: "chart.pie")
+                        }
+                    
+                    ProfileScreen(loginManager: loginManager)
+                        .tabItem {
+                            Label("Profile", systemImage: "person")
+                        }
+                    
                 }
-            
-            IncomeMainScreen()
-                .tabItem {
-                    Label("Income", systemImage: "square.and.pencil")
-                }
-            
-            ReportsMainScreen()
-                .tabItem {
-                    Label("Reports", systemImage: "chart.pie")
-                }
-            
-            ProfileScreen(loginManager: loginManager)
-                .tabItem {
-                    Label("Profile", systemImage: "person")
-                }
-            
+            }
         }
+        
     }
 }
 
