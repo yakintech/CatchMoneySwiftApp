@@ -14,28 +14,28 @@ struct AuthScreen: View {
     @State var goHome: Bool = false
     @ObservedObject var loginManager: LoginManager
     @State private var showAlert: Bool = false
-
+    
     var body: some View {
-
+        
         NavigationView {
             VStack {
-
+                
                 Text("Login")
                     .font(.largeTitle)
-
+                
                 TextField("Email", text: $email)
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-
-
+                
+                
                 Button(action: {
                     let user: [String: Any] = [
                         "email": email
-
+                        
                     ]
-
+                    
                     if isValidEmail(email) {
                         // Email geçerli, bir sonraki adıma geç
                         AF.request(
@@ -43,17 +43,17 @@ struct AuthScreen: View {
                             parameters: user, encoding: JSONEncoding.default
                         ).responseDecodable(of: RegisterModel.self) {
                             response in
-
+                            
                             UserDefaults.standard.setValue(
                                 email, forKey: "email")
                             isActive = true
                         }
-
+                        
                     } else {
                         // Email geçersiz ise hata göster
                         showAlert = true
                     }
-
+                    
                 }) {
                     Text("Login")
                         .frame(maxWidth: .infinity)
@@ -64,40 +64,40 @@ struct AuthScreen: View {
                 }
                 .padding()
                 .alert(isPresented: $showAlert) {
-                                Alert(
-                                    title: Text("Invalid Email"),
-                                    message: Text("Lütfen email formatında bir veri giriniz."),
-                                    dismissButton: .default(Text("OK"))
-                                )
-                            }
-
+                    Alert(
+                        title: Text("Invalid Email"),
+                        message: Text("Lütfen email formatında bir veri giriniz."),
+                        dismissButton: .default(Text("OK"))
+                    )
+                }
+                
                 Divider()
-
+                
                 Button("Google ile auth") {
                     Task {
                         var result = try await GoogleSignInManager.shared
                             .signInWithGoogle()
-
+                        
                         let user: [String: Any] = [
                             "email": result?.profile?.email
                         ]
-
+                        
                         AF.request(
                             "\(APIConfig.apiUrl)/login/gmail", method: .post,
                             parameters: user, encoding: JSONEncoding.default
-                        ).responseDecodable(of: GoogleLoginResponseModel.self) {
-                            response in
+                        ).responseDecodable(of: GoogleLoginResponseModel.self) { response in
                             if response.response?.statusCode == 200 {
                                 UserDefaults.standard.setValue(
                                     email, forKey: "email")
                                 goHome = true
+                                loginManager.isLoggedIn = true
                             }
-
+                            
                         }
-
+                        
                     }
                 }
-
+                
                 Button("Logout") {
                     Task {
                         try await GoogleSignInManager.shared.signOutFromGoogle()
@@ -110,18 +110,17 @@ struct AuthScreen: View {
                 ) {
                     EmptyView()
                 }
-
+                
                 NavigationLink(
                     destination: TabMain(loginManager: loginManager)
                         .navigationBarBackButtonHidden(true), isActive: $goHome
                 ) {
-
                     EmptyView()
                 }
+                .padding()
             }
-            .padding()
+            
         }
-
     }
 }
 

@@ -12,11 +12,11 @@ struct ExpenseMainScreen: View {
     
     @State var expenses: [ExpenseModel] = []
     var dateFilters : [DateFilterModel] = [DateFilterModel(key: "today", text:"Today"),DateFilterModel(key: "yesterday", text:"Yesterday"),DateFilterModel(key: "last_week", text:"Last Week"),DateFilterModel(key: "last_month", text:"Last Month"),DateFilterModel(key: "all", text:"All")]
-    @State private var selectedDateFilter = DateFilterModel(key: "today", text:"today")
+    @State private var selectedDateFilter = DateFilterModel(key: "today", text:"Today")
     
     
-    @State var categories : [CategoryPickerModel] = []
-    @State private var selectedCategory = CategoryPickerModel()
+    @State var categories : [Category] = []
+    @State private var selectedCategory = Category()
     
     
     @State var minAmount : String = ""
@@ -26,21 +26,27 @@ struct ExpenseMainScreen: View {
     var body: some View {
         NavigationView {
         ScrollView {
-                   VStack(spacing: 18) {  // Her öğe arasında daha fazla boşluk
+            VStack(spacing: 18) {  // Her öğe arasında daha fazla boşluk
                        
-                       Picker("Please choose a filter", selection: $selectedDateFilter) {
-                                      ForEach(dateFilters, id: \.self) {
-                                          Text($0.text)
-                                      }
-                                  }
-                       .onChange(of:selectedDateFilter) { newValue in
-                           let request = AF.request(
-                            "\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)", encoding: JSONEncoding.default
-                           ).responseDecodable(of: [ExpenseModel].self) { response in
-
-                               expenses = response.value ?? []
-                           }
-                                  }
+            Picker("Please choose a filter", selection: $selectedDateFilter) {
+                ForEach(dateFilters, id: \.self) {
+                    Text($0.text)
+                }
+            }
+                
+            .onChange(of:selectedDateFilter) { newValue in
+                
+                AF.request("\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)").responseDecodable(of: [ExpenseModel].self) { response in
+                    switch response.result {
+                    case .success(var value):
+                        value = response.value!
+                        expenses = value
+                        print(expenses)
+                    case .failure(let error):
+                        print("Decoding failed with error: \(error)")
+                    }
+                }
+            }
                        Divider()
                        
                        Picker("Please choose a category", selection: $selectedCategory) {
@@ -49,14 +55,17 @@ struct ExpenseMainScreen: View {
                                       }
                                   }
                        .onChange(of:selectedCategory) { newValue in
-                           let request = AF.request(
-                            "\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)", encoding: JSONEncoding.default
-                           ).responseDecodable(of: [ExpenseModel].self) { response in
-
-                               expenses = response.value ?? []
+                           AF.request("\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)").responseDecodable(of: [ExpenseModel].self) { response in
+                               switch response.result {
+                               case .success(var value):
+                                   value = response.value!
+                                   expenses = value
+                                   print(expenses)
+                               case .failure(let error):
+                                   print("Decoding failed with error: \(error)")
+                               }
                            }
-                                  }
-                       
+                       }
                        Divider()
                        
                        TextField("Min: ", text: $minAmount)
@@ -71,7 +80,7 @@ struct ExpenseMainScreen: View {
                        
                        
                        
-                       ForEach(expenses, id: \._id) { item in
+                       ForEach(expenses, id: \.id) { item in
                            ZStack {
                                RoundedRectangle(cornerRadius: 20)
                                    .fill(LinearGradient(
@@ -83,7 +92,7 @@ struct ExpenseMainScreen: View {
                                
                                VStack(alignment: .leading, spacing: 12) {
                                    HStack {
-                                       Text(item.description)
+                                       Text(item.description ?? "")
                                            .font(.title3)
                                            .bold()
                                            .foregroundColor(.white)
@@ -127,7 +136,7 @@ struct ExpenseMainScreen: View {
                        isButtonActive = true
                    }) {
                        Text("Add Expense")
-                           .foregroundColor(.blue)  
+                           .foregroundColor(.blue)
                    })
             
         }
@@ -144,26 +153,45 @@ struct ExpenseMainScreen: View {
                         .padding()
                 }*/
         .onAppear {
-            AF.request(
-                "\(APIConfig.apiUrl)/expense/filter?period=today", encoding: JSONEncoding.default
-            ).responseDecodable(of: [ExpenseModel].self) { response in
-
-                expenses = response.value ?? []
-                print(expenses)
-                
-                AF.request(
-                    "\(APIConfig.apiUrl)/category", encoding: JSONEncoding.default
-                ).responseDecodable(of: [CategoryPickerModel].self) { response in
-
-                    categories = response.value ?? []
+            fetchCategories()
+            AF.request("\(APIConfig.apiUrl)/expense/filter?period=\(selectedDateFilter.key)&category=\(selectedCategory._id)").responseDecodable(of: [ExpenseModel].self) { response in
+                switch response.result {
+                case .success(var value):
+                    value = response.value!
+                    expenses = value
+                    print(expenses)
+                case .failure(let error):
+                    print("Decoding failed with error: \(error)")
                 }
             }
             
            
         }
+        
+        
     }
     
-
+    func fetchCategories() {
+        let url = "\(APIConfig.apiUrl)/category"
+        
+        AF.request(url).responseDecodable(of: [Category].self) { response in
+                switch response.result {
+                case .success(let fetchedCategories):
+                    self.categories = fetchedCategories
+                    if fetchedCategories.isEmpty {
+                        print("No categories found.")
+                    } else {
+                        // Set the first category as the selected one
+                        self.selectedCategory = fetchedCategories.first!
+                        print("Fetched categories: \(fetchedCategories)")
+                        
+                        // Safe unwrapping of selectedCategory
+                    }
+                case .failure(let error):
+                    print("Error fetching categories: \(error)")
+                }
+        }
+    }
 
 }
 
@@ -179,7 +207,4 @@ struct DateFilterModel : Hashable{
 }
 
 
-struct CategoryPickerModel : Codable, Hashable{
-    var _id : String = ""
-    var name : String = ""
-}
+
